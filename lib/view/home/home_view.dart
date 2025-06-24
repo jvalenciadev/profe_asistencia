@@ -3,7 +3,6 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:profe_asistencia/view/home/home_screen.dart';
 import '../../res/assets/image_assets.dart';
-import '../../res/colors/app_color.dart';
 import '../../res/fonts/app_fonts.dart';
 import 'package:flutter/services.dart';
 
@@ -55,19 +54,21 @@ class _HomeViewState extends State<HomeView> {
                 onPressed: () => Navigator.of(c).pop(false),
                 child: Text(
                   'Cancelar',
-                  style: TextStyle(color: AppColor.primaryColor),
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.primaryColor,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
                 ),
                 onPressed: () => Navigator.of(c).pop(true),
                 child: Text(
                   'Salir',
                   style: TextStyle(
                     fontFamily: AppFonts.mina,
-                    color: AppColor.whiteColor,
+                    color: Theme.of(context).appBarTheme.foregroundColor,
                   ),
                 ),
               ),
@@ -82,11 +83,12 @@ class _HomeViewState extends State<HomeView> {
   }
 
   int _currentIndex = 2;
-   void changeTab(int index) {
+  void changeTab(int index) {
     setState(() {
       _currentIndex = index;
     });
   }
+
   final List<String> _titles = [
     "Eventos",
     "Ofertas académicas",
@@ -94,7 +96,7 @@ class _HomeViewState extends State<HomeView> {
     "Sedes",
     "Información",
   ];
-  
+
   @override
   Widget build(BuildContext context) {
     final List<Widget> screens = [
@@ -124,8 +126,8 @@ class _HomeViewState extends State<HomeView> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          AppColor.primaryColor,
-                          AppColor.secondaryColor,
+                          Theme.of(context).colorScheme.secondary,
+                          Theme.of(context).colorScheme.secondary,
                         ],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
@@ -142,7 +144,7 @@ class _HomeViewState extends State<HomeView> {
                           fontFamily: 'Mina',
                           fontSize: 22,
                           fontWeight: FontWeight.bold,
-                          color: AppColor.whiteColor,
+                          color: Theme.of(context).colorScheme.surface,
                           height: 1.2,
                         ),
                       ),
@@ -163,43 +165,53 @@ class _HomeViewState extends State<HomeView> {
   }
 
   Widget _buildBottomNavBar() {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 3),
       child: GNav(
-        rippleColor: AppColor.secondaryColor,
-        hoverColor: AppColor.primaryColor,
-        backgroundColor: AppColor.whiteColor,
-        color: AppColor.primaryColor,
-        activeColor: AppColor.whiteColor,
-        tabActiveBorder: Border.all(color: AppColor.whiteColor, width: 1),
-        tabBorder: Border.all(color: AppColor.whiteColor, width: 1),
-        tabShadow: const [BoxShadow(color: AppColor.whiteColor, blurRadius: 8)],
+        rippleColor: colorScheme.secondary,
+        hoverColor: colorScheme.primary,
+        backgroundColor: colorScheme.surface,
+        color: colorScheme.primary,
+        activeColor: theme.appBarTheme.foregroundColor,
+        tabActiveBorder: Border.all(color: colorScheme.surface, width: 1),
+        tabBorder: Border.all(color: colorScheme.surface, width: 1),
+        tabShadow: [BoxShadow(color: colorScheme.surface, blurRadius: 8)],
         curve: Curves.bounceIn,
         duration: const Duration(milliseconds: 400),
-        tabBackgroundColor: AppColor.secondaryColor,
+        tabBackgroundColor: colorScheme.secondary,
         gap: 8,
         tabBorderRadius: 15,
         haptic: true,
         onTabChange: (index) => setState(() => _currentIndex = index),
         selectedIndex: _currentIndex,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-        tabs: const [
+        tabs: [
           GButton(
+            iconColor: theme.iconTheme.color,
             icon: FontAwesomeIcons.calendarDays,
-            iconSize: 20,
+            iconSize: theme.iconTheme.size,
             text: 'Eventos',
           ),
           GButton(
+            iconColor: theme.iconTheme.color,
             icon: FontAwesomeIcons.graduationCap,
-            iconSize: 20,
+            iconSize: theme.iconTheme.size,
             text: 'Ofertas',
           ),
           GButton(
+            iconColor: theme.iconTheme.color,
             icon: FontAwesomeIcons.houseChimney,
-            iconSize: 20,
+            iconSize: theme.iconTheme.size,
             text: 'Home',
           ),
-          GButton(icon: FontAwesomeIcons.building, iconSize: 20, text: 'Sedes'),
+          GButton(
+            iconColor: theme.iconTheme.color,
+            icon: FontAwesomeIcons.building,
+            iconSize: theme.iconTheme.size,
+            text: 'Sedes',
+          ),
         ],
       ),
     );

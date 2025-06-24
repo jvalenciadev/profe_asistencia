@@ -49,11 +49,11 @@ class _SplashScreenState extends State<SplashScreen> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              AppColor.whiteColor,
-              Color(0xFFE0E0E0),
+              Theme.of(context).colorScheme.surface,
+              Theme.of(context).colorScheme.surface,
             ], // Ligero degradado gris claro
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -100,6 +100,7 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Widget _buildInfoRow(String label, String? value) {
+    final theme = Theme.of(context);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: Row(
@@ -107,20 +108,20 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Text(
             label,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontFamily: AppFonts.mina,
               fontWeight: FontWeight.w500,
-              color: AppColor.primaryTextColor,
+              color: theme.colorScheme.onSurface,
             ),
           ),
           const SizedBox(width: 5),
           Text(
             value ?? "Cargando...",
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontFamily: AppFonts.mina,
-              color: AppColor.primaryTextColor,
+              color: theme.colorScheme.onSurface,
             ),
           ),
         ],

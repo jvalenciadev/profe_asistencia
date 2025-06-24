@@ -22,7 +22,7 @@ class _GeneralExceptionWidgetState extends State<GeneralExceptionWidget> {
       child: Column(
         children: [
           SizedBox(height: height * .15 ,),
-          Icon(Icons.cloud_off , color: AppColor.redColor,size: 50,),
+          Icon(Icons.cloud_off , color: AppColor.dangerColor,size: 50,),
           Padding(
             padding: const EdgeInsets.only(top: 30),
             child: Center(child: Text('general_exception'.tr , textAlign: TextAlign.center,)),

@@ -7,8 +7,8 @@ class RoundButton extends StatelessWidget {
 
   const RoundButton({
     Key? key ,
-    this.buttonColor = AppColor.primaryButtonColor  ,
-    this.textColor = AppColor.primaryTextColor ,
+    this.buttonColor = AppColor.primaryColor,
+    this.textColor = AppColor.primaryTextColor,
     required this.title ,
     required this.onPress ,
     this.width = 60 ,
@@ -34,7 +34,7 @@ class RoundButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(50)
         ),
         child: loading ?
-        Center(child: CircularProgressIndicator(color: AppColor.grey2Color,)) :
+        Center(child: CircularProgressIndicator(color: AppColor.greyColor,)) :
         Center(
           child: Text(title , style:  Theme.of(context).textTheme.titleMedium!.copyWith(color: Colors.white),),
         ),

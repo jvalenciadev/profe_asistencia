@@ -62,16 +62,24 @@ flutter:
     - family: Montserrat
       fonts:
         - asset: assets/fonts/Montserrat-Regular.ttf
-        - asset: assets/fonts/Montserrat-Bold.ttf
     - family: Roboto
       fonts:
         - asset: assets/fonts/Roboto-Regular.ttf
-        - asset: assets/fonts/Roboto-Bold.ttf
     - family: Mina
       fonts:
         - asset: assets/fonts/Mina-Regular.ttf
-        - asset: assets/fonts/Mina-Bold.ttf
     - family: Bellota
       fonts:
         - asset: assets/fonts/Bellota-Regular.ttf
-        - asset: assets/fonts/Bellota-Bold.ttf
+    - family: WorkSans
+      fonts:
+        - asset: assets/fonts/WorkSans-Regular.ttf
+    - family: OpenSans
+      fonts:
+        - asset: assets/fonts/OpenSans-VariableFont.ttf
+    - family: Nunito
+      fonts:
+        - asset: assets/fonts/Nunito-Regular.ttf
+    - family: Lato
+      fonts:
+        - asset: assets/fonts/Lato-Regular.ttf
