@@ -60,7 +60,7 @@ class SplashServices {
     String versionActual = appInfo.respuesta?.versionActual ?? '';
     String? playStoreUrl = appInfo.respuesta?.playstoreUrl;
 
-    if (appVersion != versionActual) {
+    if (appVersion == versionActual) {
       Get.offAllNamed(RouteName.updateAppView, arguments: {'url': playStoreUrl});
     } else {
       // Verificamos si es la primera vez

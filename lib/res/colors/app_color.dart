@@ -15,8 +15,10 @@ class AppColor {
   static const Color errorColor               =  Color.fromARGB(255, 244, 67, 54);
   static const Color dangerColor              =  Color.fromARGB(255, 218, 6, 38);
   static const Color criticalColor            =  Color.fromARGB(255, 183, 28, 28);
+  static const Color sentColor                =  Color.fromARGB(255, 76, 175, 80); // Verde típico "success"
 
-  static const Color primaryColor             =  Color.fromARGB(255, 92, 197, 181);
+
+  static const Color primaryColor             =  Color.fromARGB(255, 33, 189, 165);
   static const Color secondaryColor           =  Color.fromARGB(255, 92, 197, 181);
   //static const Color secondaryColor           =  Color(0xff47ac66);
 
@@ -24,7 +26,7 @@ class AppColor {
   static const Color iaChatColor              = Color(0xff9224ac);
 
   // COLORES TEXTOS
-  static const Color primaryTextColor         =  Color(0xff000000);
+  static const Color primaryTextColor         =  Color.fromARGB(255, 46, 46, 46);
   static const Color secondaryTextColor       =  Color(0xff444648);
   static const Color primaryDarkTextColor     =  Color.fromARGB(255, 255, 255, 255);
   static const Color secondaryDrakTextColor   =  Color.fromARGB(255, 180, 187, 194);

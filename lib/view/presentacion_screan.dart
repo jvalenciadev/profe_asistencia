@@ -1,16 +1,16 @@
+// ignore_for_file: depend_on_referenced_packages
 import 'package:animate_do/animate_do.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:get/get.dart';
 import 'package:introduction_screen/introduction_screen.dart';
-import 'package:profe_asistencia/widgets/helper.dart';
+import 'package:profe_asistencia/widgets/loading.dart';
 import '../models/app_model.dart';
 import '../res/icons/icons.dart' show iconMap;
 import 'package:url_launcher/url_launcher.dart';
 
 import '../data/response/status.dart';
-import '../res/colors/app_color.dart';
 import '../res/fonts/app_fonts.dart';
 import '../res/routes/routes_name.dart';
 import '../utils/utils.dart';
@@ -48,11 +48,15 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     return Scaffold(
       body: Obx(() {
         switch (_controller.rxRequestStatus.value) {
           case Status.LOADING:
-            return loading();
+            return const LoadingWidget();
           case Status.ERROR:
             return Center(
               child: Padding(
@@ -63,53 +67,54 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
                     FaIcon(
                       FontAwesomeIcons.exclamationTriangle,
                       size: 48,
-                      color: Colors.redAccent,
+                      color: Colors.redAccent.shade400,
                     ),
                     const SizedBox(height: 16),
                     Text(
                       '¡Vaya! Algo salió mal.',
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: textTheme.headlineSmall?.copyWith(
                         fontFamily: AppFonts.mina,
-                        fontSize: 18,
-                        color: AppColor.primaryColor,
-                        fontWeight: FontWeight.w600,
+                        color: colorScheme.primary,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       _controller.error.value,
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
+                      style: textTheme.bodyMedium?.copyWith(
                         fontFamily: AppFonts.mina,
-                        fontSize: 14,
                         color: Colors.redAccent,
                       ),
                     ),
                     const SizedBox(height: 20),
                     ElevatedButton.icon(
                       onPressed: () => _controller.appInfoApi(),
-                      icon: const FaIcon(
+                      icon: FaIcon(
                         FontAwesomeIcons.undo,
-                        size: 16,
-                        color: AppColor.whiteColor,
+                        size: 18,
+                        color: colorScheme.onPrimary,
                       ),
-                      label: const Text(
+                      label: Text(
                         'Reintentar',
-                        style: TextStyle(
+                        style: textTheme.bodyMedium?.copyWith(
                           fontFamily: AppFonts.mina,
-                          color: AppColor.whiteColor,
+                          color: colorScheme.onPrimary,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.primaryColor,
+                        backgroundColor: colorScheme.primary,
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 24,
-                          vertical: 12,
+                          horizontal: 28,
+                          vertical: 14,
                         ),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(12),
                         ),
+                        elevation: 6,
+                        shadowColor: colorScheme.primary.withValues(alpha: 0.4),
                       ),
                     ),
                   ],
@@ -117,18 +122,11 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
               ),
             );
           case Status.COMPLETED:
-          final data = _controller.appInfo.value.respuesta!;
+            final data = _controller.appInfo.value.respuesta!;
             return Stack(
               children: [
-                // Fondo degradado
                 Container(
-                  decoration: const BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [AppColor.primaryColor, AppColor.secondaryColor],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                  ),
+                  color: colorScheme.onPrimary.withValues(alpha: 0.1),
                 ),
                 Positioned(
                   top: 60,
@@ -136,23 +134,24 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
                   right: 0,
                   child: Center(
                     child: ZoomIn(
-                      duration: const Duration(milliseconds: 800),
+                      duration: const Duration(milliseconds: 900),
                       child: Container(
-                        padding: const EdgeInsets.all(12),
+                        padding: const EdgeInsets.all(14),
                         decoration: BoxDecoration(
-                          color: AppColor.whiteColor.withOpacity(0.3),
-                          shape: BoxShape.rectangle,
-                          borderRadius: BorderRadius.circular(
-                            16,
-                          ), // opcional: redondea esquinas
+                          color: colorScheme.onPrimary.withValues(alpha: 0.25),
+                          borderRadius: BorderRadius.circular(20),
                           boxShadow: [
-                            BoxShadow(color: Colors.black26, blurRadius: 8),
+                            BoxShadow(
+                              color: colorScheme.onSurface.withValues(alpha: 0.1),
+                              blurRadius: 12,
+                              offset: const Offset(0, 6),
+                            ),
                           ],
                         ),
                         child: Image.asset(
                           'assets/logos/logoprofe.png',
-                          width: 200,
-                          height: 80,
+                          width: 220,
+                          height: 90,
                           fit: BoxFit.contain,
                         ),
                       ),
@@ -160,53 +159,55 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
                   ),
                 ),
 
-                // IntroductionScreen
                 Padding(
                   padding: const EdgeInsets.only(top: 180),
                   child: IntroductionScreen(
-                    pages: data.pages?.map((p) => _buildPage(p)).toList(),
+                    pages:
+                        data.pages
+                            ?.map((p) => _buildPage(p, colorScheme, textTheme))
+                            .toList(),
                     globalBackgroundColor: Colors.transparent,
                     showSkipButton: true,
                     skip: FadeInLeft(
                       child: Text(
                         'Saltar',
-                        style: TextStyle(
-                          color: AppColor.whiteColor,
-                          fontFamily: AppFonts.montserrat,
-                          fontSize: 16,
-                        ),
+                        style: textTheme.bodyMedium,
                       ),
                     ),
                     next: BounceInRight(
                       child: CircleAvatar(
-                        backgroundColor: AppColor.whiteColor.withOpacity(0.8),
-                        radius: 24,
+                        backgroundColor: colorScheme.onPrimary.withValues(alpha: 
+                          0.85,
+                        ),
+                        radius: 26,
                         child: Icon(
                           Icons.arrow_forward,
-                          color: AppColor.primaryColor,
+                          color: colorScheme.primary,
+                          size: 26,
                         ),
                       ),
                     ),
                     done: BounceInUp(
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 15,
-                          vertical: 20,
+                          horizontal: 10,
+                          vertical: 15,
                         ),
                         decoration: BoxDecoration(
-                          color: AppColor.whiteColor,
+                          color: colorScheme.primary,
                           borderRadius: BorderRadius.circular(40),
                           boxShadow: [
-                            BoxShadow(color: Colors.black38, blurRadius: 12),
+                            BoxShadow(
+                              color: colorScheme.onSurface.withValues(alpha: 0.3),
+                              blurRadius: 14,
+                              offset: const Offset(0, 6),
+                            ),
                           ],
                         ),
                         child: Text(
                           'Comenzar',
-                          style: TextStyle(
-                            fontFamily: AppFonts.mina,
-                            fontSize: 16,
-                            color: AppColor.primaryColor,
-                            fontWeight: FontWeight.bold,
+                          style: textTheme.bodyMedium?.copyWith(
+                            color:colorScheme.onSecondary,
                           ),
                         ),
                       ),
@@ -215,15 +216,15 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
                     onSkip: _goHome,
                     dotsDecorator: DotsDecorator(
                       size: const Size(12, 12),
-                      activeSize: const Size(24, 12),
-                      activeColor: AppColor.whiteColor,
-                      color: AppColor.whiteColor.withOpacity(0.5),
+                      activeSize: const Size(26, 12),
+                      activeColor: colorScheme.primary,
+                      color: colorScheme.primary.withValues(alpha: 0.4),
                       activeShape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
                       ),
                     ),
-                    animationDuration: 600,
-                    curve: Curves.easeInOutQuad,
+                    animationDuration: 650,
+                    curve: Curves.easeInOutCubic,
                   ),
                 ),
               ],
@@ -235,72 +236,71 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
     );
   }
 
-  PageViewModel _buildPage(PageData p) {
+  PageViewModel _buildPage(
+    PageData p,
+    ColorScheme colorScheme,
+    TextTheme textTheme,
+  ) {
     return PageViewModel(
       decoration: const PageDecoration(
         pageColor: Colors.transparent,
         imagePadding: EdgeInsets.zero,
-        contentMargin: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+        contentMargin: EdgeInsets.symmetric(horizontal: 24, vertical: 18),
       ),
       titleWidget: FadeInDown(
         child: Text(
-          p.title!,
+          p.title ?? '',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.mina,
-            fontSize: 32,
-            fontWeight: FontWeight.bold,
-            color: AppColor.whiteColor,
-          ),
+          style: textTheme.headlineMedium
+          ,
         ),
       ),
       bodyWidget: FadeIn(
-        delay: const Duration(milliseconds: 300),
+        delay: const Duration(milliseconds: 350),
         child: Text(
-          p.body!,
+          p.body ?? '',
           textAlign: TextAlign.center,
-          style: TextStyle(
-            fontFamily: AppFonts.montserrat,
-            fontSize: 18,
-            color: AppColor.whiteColor.withOpacity(0.9),
-          ),
+          style: textTheme.bodyMedium,
         ),
       ),
       image: Stack(
         alignment: Alignment.center,
         children: [
-          // Círculo de fondo animado
           Pulse(
-            duration: const Duration(seconds: 2),
+            duration: const Duration(seconds: 3),
             child: Container(
-              width: 260,
-              height: 260,
+              width: 280,
+              height: 280,
               decoration: BoxDecoration(
-                color: AppColor.whiteColor.withOpacity(0.1),
-                shape: BoxShape.circle,
+                color: colorScheme.onSurface.withValues(alpha: 0.12),
+                shape: BoxShape.rectangle,
+                borderRadius: BorderRadius.all(Radius.circular(20))
               ),
             ),
           ),
-          // Imagen principal
           ZoomIn(
-            delay: const Duration(milliseconds: 500),
+            delay: const Duration(milliseconds: 600),
             child: ClipRRect(
-              borderRadius: BorderRadius.circular(24),
+              borderRadius: BorderRadius.circular(28),
               child: CachedNetworkImage(
-                imageUrl: p.imageUrl!,
-                width: 350,
-                height: 200,
-                fit: BoxFit.fill,
+                imageUrl: p.imageUrl ?? '',
+                width: 360,
+                height: 210,
+                fit: BoxFit.cover,
                 placeholder:
                     (c, u) => Container(
                       height: 270,
-                      color: const Color.fromARGB(12, 245, 245, 245),
-                      child: const Center(child: CircularProgressIndicator(color: AppColor.primaryColor,)),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.06),
+                      child: Center(
+                        child: CircularProgressIndicator(
+                          color: colorScheme.primary,
+                        ),
+                      ),
                     ),
                 errorWidget:
                     (c, u, e) => Container(
                       height: 270,
-                      color: const Color.fromARGB(12, 245, 245, 245),
+                      color: colorScheme.onPrimary.withValues(alpha: 0.06),
                       child: const Center(
                         child: Icon(Icons.error, color: Colors.red),
                       ),
@@ -311,28 +311,30 @@ class _PresentacionScreenState extends State<PresentacionScreen> {
         ],
       ),
       footer: Padding(
-        padding: const EdgeInsets.only(top: 32, bottom: 8),
+        padding: const EdgeInsets.only(top: 36, bottom: 12),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children:
-              p.socials!
-                  .map(
-                    (s) => Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 20),
-                      child: InkWell(
-                        onTap: () => _launchURL(s.url!),
-                        child: Pulse(
-                          infinite: true,
-                          child: FaIcon(
-                            iconMap[s.icon] ?? FontAwesomeIcons.circleQuestion,
-                            size: 28,
-                            color: (colorMap[s.color] ?? Colors.grey).withOpacity(0.9),
-                          ),
+              p.socials?.map((s) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 18),
+                  child: InkWell(
+                    onTap: () => _launchURL(s.url ?? ''),
+                    borderRadius: BorderRadius.circular(30),
+                    child: Pulse(
+                      infinite: true,
+                      child: FaIcon(
+                        iconMap[s.icon] ?? FontAwesomeIcons.circleQuestion,
+                        size: 30,
+                        color: colorScheme.onSurface.withValues(alpha: 
+                          0.85,
                         ),
                       ),
                     ),
-                  )
-                  .toList(),
+                  ),
+                );
+              }).toList() ??
+              [],
         ),
       ),
     );

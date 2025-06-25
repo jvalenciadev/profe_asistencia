@@ -30,7 +30,7 @@ class AppTheme {
       pageTransitionsTheme: const PageTransitionsTheme(),
       textTheme: AppTextTheme.lightTextTheme(fontFamily),
       cardColor: Colors.white,
-      dividerColor: AppColor.greyColor.withValues(alpha: 0.4),
+      dividerColor: AppColor.whiteColor,
     );
   }
 
@@ -58,7 +58,7 @@ class AppTheme {
       ),
       textTheme: AppTextTheme.darkTextTheme(fontFamily),
       cardColor: AppColor.greyColor.withValues(alpha: 0.2),
-      dividerColor: AppColor.greyColor.withValues(alpha: 0.4),
+      dividerColor: AppColor.greyColor.withValues(alpha: 0.3),
     );
   }
 }

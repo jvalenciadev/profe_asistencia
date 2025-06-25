@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../../view_models/controller/theme/theme_controller.dart';
-import '../../widgets/fontselect.dart';
-import '../../widgets/lenguajeselect.dart';
+import '../../widgets/font_select.dart';
+import '../../widgets/lenguaje_select.dart';
+import '../../widgets/modo_select.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +14,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
-    final ThemeController themeController = Get.find();
     final textTheme = Theme.of(context).textTheme;
 
     return Center(
@@ -27,60 +26,9 @@ class _HomeScreenState extends State<HomeScreen> {
               'Selecciona el modo de tema:',
               style: textTheme.headlineMedium,
             ),
-            Text('Estilo: headlineMedium', style: textTheme.labelSmall),
+            Text('Estilo: headlineMedium', style: textTheme.labelSmall,),
             const SizedBox(height: 20),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => themeController.setLightMode(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        textStyle: textTheme.labelLarge,
-                      ),
-                      child: const Text("Claro"),
-                    ),
-                    Text('Estilo: labelLarge', style: textTheme.labelSmall),
-                  ],
-                ),
-                const SizedBox(width: 8),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => themeController.setDarkMode(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        textStyle: textTheme.labelLarge,
-                      ),
-                      child: const Text("Oscuro"),
-                    ),
-                    Text('Estilo: labelLarge', style: textTheme.labelSmall),
-                  ],
-                ),
-                const SizedBox(width: 8),
-                Column(
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => themeController.setSystemMode(),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Theme.of(context).colorScheme.primary,
-                        foregroundColor:
-                            Theme.of(context).colorScheme.onPrimary,
-                        textStyle: textTheme.labelLarge,
-                      ),
-                      child: const Text("Sistema"),
-                    ),
-                    Text('Estilo: labelLarge', style: textTheme.labelSmall),
-                  ],
-                ),
-              ],
-            ),
+            ThemeModeSelectorWidget(),
             const SizedBox(height: 24),
             FontSelectorWidget(),
             LanguageSelectorWidget(),

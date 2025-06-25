@@ -6,7 +6,7 @@ import '../../../res/fonts/app_fonts.dart';
 class FontController extends GetxController {
   static const String _key = 'app_font';
 
-  var currentFont = AppFonts.schylerRegular.obs;
+  var currentFont = AppFonts.montserrat.obs;
 
   @override
   void onInit() {
@@ -16,7 +16,7 @@ class FontController extends GetxController {
 
   Future<void> _loadFont() async {
     final prefs = await SharedPreferences.getInstance();
-    final font = prefs.getString(_key) ?? AppFonts.schylerRegular;
+    final font = prefs.getString(_key) ?? AppFonts.montserrat;
     currentFont.value = font;
   }
 
