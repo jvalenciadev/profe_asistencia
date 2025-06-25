@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:animate_do/animate_do.dart';
-import '../res/colors/app_color.dart';
 import '../res/routes/routes_name.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-import '../../res/fonts/app_fonts.dart';
-
 class UpdateAppView extends StatelessWidget {
-  
   UpdateAppView({super.key});
   final String? url = Get.arguments?['url'];
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
         padding: const EdgeInsets.symmetric(horizontal: 20),
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             colors: [
-              AppColor.whiteColor,
-              Color(0xFFE3F2FD),
-            ], // Suave degradado azul
+              colorScheme.surface,
+              colorScheme.surface.withValues(alpha: 0.1),
+            ],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -34,45 +33,42 @@ class UpdateAppView extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Icon(
-                Icons.system_update,
-                size: 80,
-                color: AppColor.primaryColor,
-              ),
+              Icon(Icons.system_update, size: 80, color: colorScheme.primary),
               const SizedBox(height: 20),
-              const Text(
-                '¡Actualización requerida!',
+              Text(
+                'update_required_title'.tr, // Traducción
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 22,
-                  fontFamily: AppFonts.mina,
+                style: textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.bold,
-                  color: AppColor.secondaryTextColor,
+                  color: colorScheme.secondary,
                 ),
               ),
               const SizedBox(height: 12),
-              const Text(
-                'Tu versión de la app está desactualizada. Por favor, actualiza para continuar.',
+              Text(
+                'update_required_message'.tr, // Traducción
                 textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 16,
-                  fontFamily: AppFonts.mina,
-                  color: AppColor.secondaryTextColor,
+                style: textTheme.bodyLarge?.copyWith(
+                  color: colorScheme.onSurface,
                 ),
               ),
               const SizedBox(height: 30),
               ElevatedButton.icon(
                 onPressed: () async {
-                   final Uri uri = Uri.parse(url!);
+                  final Uri uri = Uri.parse(url!);
                   if (await canLaunchUrl(uri)) {
                     await launchUrl(uri, mode: LaunchMode.externalApplication);
                   } else {
-                    throw 'No se pudo abrir la tienda.';
+                    Get.snackbar(
+                      'error'.tr,
+                      'could_not_open_store'.tr,
+                      backgroundColor: Colors.redAccent,
+                      colorText: Colors.white,
+                    );
                   }
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColor.primaryColor,
-                  foregroundColor: AppColor.whiteColor,
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: colorScheme.onPrimary,
                   padding: const EdgeInsets.symmetric(
                     horizontal: 24,
                     vertical: 14,
@@ -81,18 +77,12 @@ class UpdateAppView extends StatelessWidget {
                     borderRadius: BorderRadius.circular(10),
                   ),
                 ),
-                icon: const Icon(Icons.download, color: AppColor.whiteColor),
-                label: const Text(
-                  'Actualizar ahora',
-                  style: TextStyle(fontSize: 16, fontFamily: AppFonts.mina),
-                ),
+                icon: Icon(Icons.download, color: colorScheme.onPrimary),
+                label: Text('update_now'.tr, style: textTheme.labelLarge),
               ),
               const SizedBox(height: 20),
               TextButton(
-                onPressed: () {
-                  // Redirigir al HomeView
-                  Get.offNamed(RouteName.homeView);
-                },
+                onPressed: () => Get.offNamed(RouteName.homeView),
                 style: TextButton.styleFrom(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 28,
@@ -100,25 +90,18 @@ class UpdateAppView extends StatelessWidget {
                   ),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
-                    side: const BorderSide(
-                      color: AppColor.primaryColor,
-                      width: 2,
-                    ),
+                    side: BorderSide(color: colorScheme.primary, width: 2),
                   ),
-                  foregroundColor: AppColor.primaryColor,
-                  backgroundColor: AppColor.whiteColor,
-                  textStyle: const TextStyle(
-                    fontSize: 18,
-                    fontFamily: AppFonts.mina,
-                    fontWeight: FontWeight.w600,
+                  foregroundColor: colorScheme.primary,
+                  backgroundColor: colorScheme.surface,
+                  textStyle: textTheme.labelLarge?.copyWith(
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
-                child: const Text(
-                  'Cancelar',
-                  style: TextStyle(
-                    color: AppColor.primaryColor,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                child: Text(
+                  'cancel'.tr,
+                  style: textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
                   ),
                 ),
               ),

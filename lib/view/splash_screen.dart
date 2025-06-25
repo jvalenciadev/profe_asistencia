@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:animate_do/animate_do.dart'; // Para animaciones
+import 'package:animate_do/animate_do.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:get/get.dart';
 import '../../res/assets/image_assets.dart';
-import '../../res/colors/app_color.dart';
 import '../../view_models/services/splash_services.dart';
-import '../res/fonts/app_fonts.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -45,16 +44,16 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Scaffold(
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
-            colors: [
-              Theme.of(context).colorScheme.surface,
-              Theme.of(context).colorScheme.surface,
-            ], // Ligero degradado gris claro
+            colors: [colorScheme.surface, colorScheme.surface.withOpacity(0.9)],
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
           ),
@@ -67,9 +66,13 @@ class _SplashScreenState extends State<SplashScreen> {
               children: [
                 _buildLogo(),
                 const SizedBox(height: 80),
-                hasError ? _buildErrorMessage() : _buildAppInfo(),
+                hasError
+                    ? _buildErrorMessage(textTheme, colorScheme)
+                    : _buildAppInfo(textTheme, colorScheme),
                 const SizedBox(height: 20),
-                hasError ? _buildRetryButton() : _buildLoadingIndicator(),
+                hasError
+                    ? _buildRetryButton(colorScheme, textTheme)
+                    : _buildLoadingIndicator(textTheme, colorScheme),
               ],
             ),
           ),
@@ -80,27 +83,40 @@ class _SplashScreenState extends State<SplashScreen> {
 
   Widget _buildLogo() {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(10), // Suaviza los bordes
+      borderRadius: BorderRadius.circular(10),
       child: Image.asset(
         ImageAssets.logoProfe,
         width: 260,
         fit: BoxFit.cover,
         errorBuilder:
-            (context, error, stackTrace) => const Icon(
+            (context, error, stackTrace) => Icon(
               Icons.image_not_supported,
               size: 100,
-              color: AppColor.greyColor,
+              color: Theme.of(context).colorScheme.onSurface,
             ),
       ),
     );
   }
 
-  Widget _buildAppInfo() {
-    return Column(children: [_buildInfoRow("Versión:", appInfo['appVersion'])]);
+  Widget _buildAppInfo(TextTheme textTheme, ColorScheme colorScheme) {
+    return Column(
+      children: [
+        _buildInfoRow(
+          'version_label'.tr,
+          appInfo['appVersion'],
+          textTheme,
+          colorScheme,
+        ),
+      ],
+    );
   }
 
-  Widget _buildInfoRow(String label, String? value) {
-    final theme = Theme.of(context);
+  Widget _buildInfoRow(
+    String label,
+    String? value,
+    TextTheme textTheme,
+    ColorScheme colorScheme,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 4),
       child: Row(
@@ -108,85 +124,65 @@ class _SplashScreenState extends State<SplashScreen> {
         children: [
           Text(
             label,
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: AppFonts.mina,
-              fontWeight: FontWeight.w500,
-              color: theme.colorScheme.onSurface,
+            style: textTheme.bodyMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
             ),
           ),
           const SizedBox(width: 5),
           Text(
-            value ?? "Cargando...",
-            style: TextStyle(
-              fontSize: 16,
-              fontFamily: AppFonts.mina,
-              color: theme.colorScheme.onSurface,
-            ),
+            value ?? 'loading'.tr,
+            style: textTheme.bodyMedium?.copyWith(color: colorScheme.onSurface),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildLoadingIndicator() {
+  Widget _buildLoadingIndicator(TextTheme textTheme, ColorScheme colorScheme) {
     return Column(
-      children: const [
-        CircularProgressIndicator(color: AppColor.primaryColor),
-        SizedBox(height: 10),
+      children: [
+        CircularProgressIndicator(color: colorScheme.primary),
+        const SizedBox(height: 10),
         Text(
-          "Cargando...",
-          style: TextStyle(
-            color: AppColor.greyColor,
-            fontFamily: AppFonts.mina,
-            fontSize: 14,
+          'loading'.tr,
+          style: textTheme.bodySmall?.copyWith(
+            color: colorScheme.onSurface.withOpacity(0.6),
           ),
         ),
       ],
     );
   }
 
-  Widget _buildRetryButton() {
+  Widget _buildRetryButton(ColorScheme colorScheme, TextTheme textTheme) {
     return ElevatedButton.icon(
       style: ElevatedButton.styleFrom(
-        backgroundColor: AppColor.primaryColor,
-        foregroundColor: AppColor.whiteColor,
+        backgroundColor: colorScheme.primary,
+        foregroundColor: colorScheme.onPrimary,
         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
       onPressed: _fetchAppInfo,
-      icon: const Icon(
-        FontAwesomeIcons.arrowsRotate,
-        color: AppColor.whiteColor,
-      ),
-      label: const Text(
-        "Reintentar",
-        style: TextStyle(fontFamily: AppFonts.mina),
-      ),
+      icon: const Icon(FontAwesomeIcons.arrowsRotate),
+      label: Text('retry'.tr, style: textTheme.labelLarge),
     );
   }
 
-  Widget _buildErrorMessage() {
+  Widget _buildErrorMessage(TextTheme textTheme, ColorScheme colorScheme) {
     return Column(
-      children: const [
-        Icon(Icons.wifi_off, size: 60, color: Colors.redAccent),
-        SizedBox(height: 10),
+      children: [
+        const Icon(Icons.wifi_off, size: 60, color: Colors.redAccent),
+        const SizedBox(height: 10),
         Text(
-          "No se pudo conectar con el servidor",
-          style: TextStyle(
-            color: Colors.redAccent,
-            fontSize: 16,
-            fontFamily: AppFonts.mina,
-          ),
+          'no_connection_title'.tr,
+          style: textTheme.titleMedium?.copyWith(color: Colors.redAccent),
           textAlign: TextAlign.center,
         ),
-        SizedBox(height: 5),
+        const SizedBox(height: 5),
         Text(
-          "Por favor verifica tu conexión\no inténtalo más tarde.",
-          style: TextStyle(
-            color: AppColor.greyColor,
-            fontSize: 14,
-            fontFamily: AppFonts.mina,
+          'no_connection_subtitle'.tr,
+          style: textTheme.bodySmall?.copyWith(
+            color: colorScheme.onSurface.withOpacity(0.6),
           ),
           textAlign: TextAlign.center,
         ),

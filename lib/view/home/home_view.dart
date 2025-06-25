@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:profe_asistencia/view/home/home_screen.dart';
+import 'package:flutter/services.dart';
+
 import '../../res/assets/image_assets.dart';
 import '../../res/fonts/app_fonts.dart';
-import 'package:flutter/services.dart';
+import '../home/home_screen.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -14,29 +16,29 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  // final homeController = Get.put(HomeController(), permanent: true);
+  int _currentIndex = 2;
 
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      // _loadHomeData();
-    });
-  }
+  final List<String> _titles = [
+    'eventos'.tr,
+    'ofertas_academicas'.tr,
+    'home'.tr,
+    'sedes'.tr,
+    'informacion'.tr,
+  ];
 
-  // Future<void> _loadHomeData() async {
-  //   try {
-  //     homeController.onInit();
-  //   } catch (e) {
-  //     showCustomSnackbar(
-  //       title: 'Error',
-  //       message: 'Failed to load home data ${e.toString()}',
-  //       isError: true,
-  //     );
-  //   }
-  // }
+  final List<Widget> _screens = [
+    const HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
+    const HomeScreen(),
+  ];
 
   Future<bool> _onWillPop() async {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+
     final exit = await showDialog<bool>(
       context: context,
       builder:
@@ -44,31 +46,26 @@ class _HomeViewState extends State<HomeView> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            title: Text('¿Salir?', style: TextStyle(fontFamily: AppFonts.mina)),
-            content: Text(
-              '¿Deseas cerrar la aplicación?',
-              style: TextStyle(fontFamily: AppFonts.mina),
-            ),
+            title: Text('salir_titulo'.tr, style: textTheme.titleLarge),
+            content: Text('salir_mensaje'.tr, style: textTheme.bodyMedium),
             actions: [
               TextButton(
                 onPressed: () => Navigator.of(c).pop(false),
                 child: Text(
-                  'Cancelar',
-                  style: TextStyle(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
+                  'cancelar'.tr,
+                  style: TextStyle(color: colorScheme.primary),
                 ),
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  backgroundColor: colorScheme.primary,
                 ),
                 onPressed: () => Navigator.of(c).pop(true),
                 child: Text(
-                  'Salir',
+                  'salir'.tr,
                   style: TextStyle(
                     fontFamily: AppFonts.mina,
-                    color: Theme.of(context).appBarTheme.foregroundColor,
+                    color: colorScheme.onPrimary,
                   ),
                 ),
               ),
@@ -82,33 +79,15 @@ class _HomeViewState extends State<HomeView> {
     return false;
   }
 
-  int _currentIndex = 2;
-  void changeTab(int index) {
-    setState(() {
-      _currentIndex = index;
-    });
-  }
-
-  final List<String> _titles = [
-    "Eventos",
-    "Ofertas académicas",
-    "Home",
-    "Sedes",
-    "Información",
-  ];
-
   @override
   Widget build(BuildContext context) {
-    final List<Widget> screens = [
-      HomeScreen(), // pasa la función
-      HomeScreen(), // pasa la función
-      HomeScreen(), // pasa la función
-      HomeScreen(), // pasa la función
-    ];
-    final screenHeight = MediaQuery.of(context).size.height;
-    final isSmallScreen = screenHeight < 660;
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    final textTheme = theme.textTheme;
+    final isSmallScreen = MediaQuery.of(context).size.height < 660;
+
     return PopScope(
-      canPop: false, // Para evitar que se cierre automáticamente
+      canPop: false,
       onPopInvokedWithResult: (didPop, result) async {
         if (!didPop) {
           await _onWillPop();
@@ -117,18 +96,14 @@ class _HomeViewState extends State<HomeView> {
       child: Scaffold(
         appBar:
             isSmallScreen
-                ? null // ❌ Oculta AppBar completamente si la pantalla es muy pequeña
+                ? null
                 : AppBar(
-                  automaticallyImplyLeading:
-                      false, // No muestra el ícono de "atrás"
+                  automaticallyImplyLeading: false,
                   elevation: 0,
                   flexibleSpace: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
-                        colors: [
-                          Theme.of(context).colorScheme.secondary,
-                          Theme.of(context).colorScheme.secondary,
-                        ],
+                        colors: [colorScheme.secondary, colorScheme.secondary],
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       ),
@@ -137,19 +112,15 @@ class _HomeViewState extends State<HomeView> {
                   title: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      // Título de la sección
                       Text(
                         _titles[_currentIndex],
-                        style: TextStyle(
-                          fontFamily: 'Mina',
-                          fontSize: 22,
+                        style: textTheme.titleLarge?.copyWith(
+                          color: colorScheme.surface,
                           fontWeight: FontWeight.bold,
-                          color: Theme.of(context).colorScheme.surface,
                           height: 1.2,
                         ),
                       ),
                       const SizedBox(height: 5),
-                      // Logo de la empresa
                       Image.asset(
                         ImageAssets.logoProfe,
                         width: 120,
@@ -158,59 +129,55 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                 ),
-        bottomNavigationBar: SafeArea(child: _buildBottomNavBar()),
-        body: screens[_currentIndex],
+        body: _screens[_currentIndex],
+        bottomNavigationBar: SafeArea(
+          child: _buildBottomNavBar(theme, colorScheme),
+        ),
       ),
     );
   }
 
-  Widget _buildBottomNavBar() {
-    final theme = Theme.of(context);
-    final colorScheme = theme.colorScheme;
+  Widget _buildBottomNavBar(ThemeData theme, ColorScheme colorScheme) {
+    final iconColor = theme.iconTheme.color;
+    final iconSize = theme.iconTheme.size ?? 20;
+
     return Padding(
       padding: const EdgeInsets.fromLTRB(10, 0, 10, 3),
       child: GNav(
-        rippleColor: colorScheme.secondary,
-        hoverColor: colorScheme.primary,
+        rippleColor: colorScheme.secondary.withOpacity(0.2),
+        hoverColor: colorScheme.primary.withOpacity(0.1),
         backgroundColor: colorScheme.surface,
-        color: colorScheme.primary,
-        activeColor: theme.appBarTheme.foregroundColor,
-        tabActiveBorder: Border.all(color: colorScheme.surface, width: 1),
-        tabBorder: Border.all(color: colorScheme.surface, width: 1),
-        tabShadow: [BoxShadow(color: colorScheme.surface, blurRadius: 8)],
-        curve: Curves.bounceIn,
-        duration: const Duration(milliseconds: 400),
+        color: iconColor,
+        activeColor: colorScheme.onPrimary,
         tabBackgroundColor: colorScheme.secondary,
+        curve: Curves.easeInOut,
+        duration: const Duration(milliseconds: 300),
         gap: 8,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
         tabBorderRadius: 15,
         haptic: true,
-        onTabChange: (index) => setState(() => _currentIndex = index),
         selectedIndex: _currentIndex,
-        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
+        onTabChange: (index) => setState(() => _currentIndex = index),
         tabs: [
           GButton(
-            iconColor: theme.iconTheme.color,
             icon: FontAwesomeIcons.calendarDays,
-            iconSize: theme.iconTheme.size,
-            text: 'Eventos',
+            iconSize: iconSize,
+            text: 'eventos'.tr,
           ),
           GButton(
-            iconColor: theme.iconTheme.color,
             icon: FontAwesomeIcons.graduationCap,
-            iconSize: theme.iconTheme.size,
-            text: 'Ofertas',
+            iconSize: iconSize,
+            text: 'ofertas'.tr,
           ),
           GButton(
-            iconColor: theme.iconTheme.color,
             icon: FontAwesomeIcons.houseChimney,
-            iconSize: theme.iconTheme.size,
-            text: 'Home',
+            iconSize: iconSize,
+            text: 'home'.tr,
           ),
           GButton(
-            iconColor: theme.iconTheme.color,
             icon: FontAwesomeIcons.building,
-            iconSize: theme.iconTheme.size,
-            text: 'Sedes',
+            iconSize: iconSize,
+            text: 'sedes'.tr,
           ),
         ],
       ),
