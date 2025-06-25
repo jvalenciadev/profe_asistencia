@@ -231,6 +231,9 @@ class _HomeViewState extends State<HomeView> {
                           Text('Mi Perfil'),
                         ],
                       ),
+                      onTap: (){
+                        Get.toNamed('/perfil_view');
+                      },
                     ),
                     PopupMenuItem(
                       value: 'ajustes',
@@ -386,7 +389,7 @@ class _HomeViewState extends State<HomeView> {
                           color: colorScheme.onSurface.withValues(alpha: 0.8),
                         ),
                         tooltip: 'Configurar perfil',
-                        onPressed: () => Get.toNamed('/perfil'),
+                        onPressed: () => Get.toNamed('/perfil_view'),
                       ),
                     ),
                   ],

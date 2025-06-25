@@ -3,6 +3,7 @@ import 'package:profe_asistencia/view/splash_screen.dart';
 import 'package:profe_asistencia/widgets/update_app_view.dart';
 import '../../res/routes/routes_name.dart';
 import '../../view/home/home_view.dart';
+import '../../view/perfil/perfil_view.dart';
 import '../../view/presentacion_screan.dart';
 
 class AppRoutes {
@@ -29,6 +30,12 @@ class AppRoutes {
     GetPage(
       name: RouteName.updateAppView,
       page: () => UpdateAppView(),
+      transitionDuration: Duration(milliseconds: 250),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: RouteName.perfilView,
+      page: () => PerfilView(),
       transitionDuration: Duration(milliseconds: 250),
       transition: Transition.fadeIn,
     ),
