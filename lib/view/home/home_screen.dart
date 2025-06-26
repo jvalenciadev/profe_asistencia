@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:profe_asistencia/res/colors/app_color.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     return SizedBox.expand(
       child: Container(
+        color: AppColor.whiteColor,
         child: ListView(
           children: [
             Text(

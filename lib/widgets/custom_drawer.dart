@@ -18,7 +18,7 @@ class CustomDrawer extends StatelessWidget {
           Container(
             width: double.infinity,
 
-            padding: EdgeInsets.fromLTRB(15, 35, 5, 20),
+            padding: EdgeInsets.fromLTRB(15, 20, 5, 20),
             decoration: BoxDecoration(
               color: colorScheme.primary.withValues(alpha: 0.06),
               border: Border(
@@ -279,7 +279,7 @@ class CustomDrawer extends StatelessWidget {
           highlightColor: colorScheme.primary.withValues(alpha: 0.04),
           onTap: onPressed,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
             child: Row(
               children: [
                 Container(
