@@ -7,6 +7,7 @@ class RouteName {
   static const String homeScreen = '/home_screen';
 
   static const String perfilView = '/perfil_view';
+  static const String configuracionView = '/configuracion_view';
   static const String programaDetalle = '/programa_detalle';
 
   static const String sedeView = '/sede_view';

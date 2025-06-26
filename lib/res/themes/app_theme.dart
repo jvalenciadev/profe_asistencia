@@ -6,6 +6,7 @@ import 'text_theme.dart';
 class AppTheme {
   static ThemeData lightTheme(String fontFamily) {
     return ThemeData(
+      useMaterial3: true,
       brightness: Brightness.light,
       primaryColor: AppColor.primaryColor,
       scaffoldBackgroundColor: AppColor.whiteColor,
@@ -36,6 +37,7 @@ class AppTheme {
 
   static ThemeData darkTheme(String fontFamily) {
     return ThemeData(
+      useMaterial3: true,
       brightness: Brightness.dark,
       primaryColor: AppColor.primaryColor,
       scaffoldBackgroundColor: AppColor.blackColor,
@@ -58,7 +60,7 @@ class AppTheme {
       ),
       textTheme: AppTextTheme.darkTextTheme(fontFamily),
       cardColor: AppColor.greyColor.withValues(alpha: 0.2),
-      dividerColor: AppColor.greyColor.withValues(alpha: 0.3),
+      dividerColor: AppColor.greyColor.withValues(alpha: 0.1),
     );
   }
 }

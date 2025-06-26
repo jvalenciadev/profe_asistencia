@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:profe_asistencia/view/configuracion/configuracion_view.dart';
 import 'package:profe_asistencia/view/splash_screen.dart';
 import 'package:profe_asistencia/widgets/update_app_view.dart';
 import '../../res/routes/routes_name.dart';
@@ -36,6 +37,12 @@ class AppRoutes {
     GetPage(
       name: RouteName.perfilView,
       page: () => PerfilView(),
+      transitionDuration: Duration(milliseconds: 250),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: RouteName.configuracionView,
+      page: () => ConfiguracionSistemaWidget(),
       transitionDuration: Duration(milliseconds: 250),
       transition: Transition.fadeIn,
     ),

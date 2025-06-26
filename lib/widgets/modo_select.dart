@@ -8,6 +8,9 @@ class ThemeModeSelectorWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final themeController = Get.find<ThemeController>();
+    final colorScheme = Theme.of(context).colorScheme;
+    final textTheme = Theme.of(context).textTheme;
+
     return Obx(() {
       final selectedMode = themeController.themeMode.value;
 
@@ -25,36 +28,25 @@ class ThemeModeSelectorWidget extends StatelessWidget {
               Icon(
                 icon,
                 size: 18,
-                color: isSelected
-                    ? Theme.of(context).colorScheme.primary
-                    : Theme.of(context).iconTheme.color,
+                color: isSelected ? colorScheme.primary : colorScheme.onSurface,
               ),
               const SizedBox(width: 6),
               Text(
                 label,
-                style: TextStyle(
+                style: textTheme.bodyMedium?.copyWith(
                   fontWeight: FontWeight.w600,
-                  fontFamily:
-                      Theme.of(context).textTheme.bodyMedium?.fontFamily,
-                  color: isSelected
-                      ? Theme.of(context).colorScheme.primary
-                      : Theme.of(context).textTheme.bodyMedium?.color,
+                  color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
                 ),
               ),
             ],
           ),
-          backgroundColor: isSelected
-              ? Theme.of(context).colorScheme.primary.withValues(alpha: 0.1)
-              : Theme.of(context).chipTheme.backgroundColor,
+          backgroundColor: isSelected ? colorScheme.primary.withValues(alpha: 0.1) : colorScheme.surface.withValues(alpha: 0.3),
           side: BorderSide(
-            color: isSelected
-                ? Theme.of(context).colorScheme.primary
-                : Colors.grey.shade300,
+            color: isSelected ? colorScheme.primary : colorScheme.outline.withValues(alpha: 0.4),
+            width: 1.2,
           ),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(20),
-          ),
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 8),
           onPressed: () {
             switch (mode) {
               case ThemeMode.light:
@@ -76,11 +68,15 @@ class ThemeModeSelectorWidget extends StatelessWidget {
         children: [
           Text(
             'Selecciona el tema',
-            style: Theme.of(context).textTheme.titleMedium,
+            style: textTheme.titleMedium?.copyWith(
+              fontWeight: FontWeight.w600,
+              color: colorScheme.onSurface,
+            ),
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 5),
           Wrap(
-            spacing: 12,
+            spacing: 10,
+            runSpacing: 12,
             children: [
               buildChip(
                 mode: ThemeMode.light,
