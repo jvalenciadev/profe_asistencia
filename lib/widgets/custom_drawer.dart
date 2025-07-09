@@ -17,7 +17,6 @@ class CustomDrawer extends StatelessWidget {
           // Encabezado estilizado con sombra y padding
           Container(
             width: double.infinity,
-
             padding: EdgeInsets.fromLTRB(15, 20, 5, 20),
             decoration: BoxDecoration(
               color: colorScheme.primary.withValues(alpha: 0.06),
@@ -267,7 +266,7 @@ class CustomDrawer extends StatelessWidget {
     final textTheme = theme.textTheme;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 4),
       child: Material(
         elevation: 2,
         shadowColor: colorScheme.shadow.withValues(alpha: 0.08),
@@ -279,7 +278,7 @@ class CustomDrawer extends StatelessWidget {
           highlightColor: colorScheme.primary.withValues(alpha: 0.04),
           onTap: onPressed,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 3),
             child: Row(
               children: [
                 Container(
@@ -290,7 +289,7 @@ class CustomDrawer extends StatelessWidget {
                     shape: BoxShape.circle,
                   ),
                   child: Center(
-                    child: FaIcon(icon, size: 18, color: colorScheme.primary),
+                    child: FaIcon(icon, size: 15, color: colorScheme.primary),
                   ),
                 ),
                 const SizedBox(width: 16),
@@ -298,7 +297,7 @@ class CustomDrawer extends StatelessWidget {
                   child: Text(
                     label,
                     style: textTheme.bodyLarge?.copyWith(
-                      fontSize: 16,
+                      fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: colorScheme.onSurface,
                     ),

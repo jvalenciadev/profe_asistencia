@@ -87,16 +87,10 @@ class _HomeViewState extends State<HomeView> {
       },
       child: Scaffold(
         drawer: CustomDrawer(),
-        body: SafeArea(
-          child: Column(
-          children: [
-            const CustomAppBarInBody(), // Ahora está dentro del body
-            Expanded(
-              child:
+        appBar: CustomAppBar(),
+        body: 
                   _screens[_currentIndex], // Contenido dinámico debajo del appbar
-            ),
-          ],
-        ),),
+            
         bottomNavigationBar: SafeArea(
           child: _buildBottomNavBar(theme, colorScheme),
         ),

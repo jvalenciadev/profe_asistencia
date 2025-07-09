@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:profe_asistencia/res/colors/app_color.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -15,9 +14,7 @@ class _HomeScreenState extends State<HomeScreen> {
     final textTheme = Theme.of(context).textTheme;
 
     return SizedBox.expand(
-      child: Container(
-        color: AppColor.whiteColor,
-        child: ListView(
+      child: ListView(
           children: [
             Text(
               'Selecciona el modo de tema:',
@@ -160,7 +157,6 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(height: 12),
             Text('labelSmall - Etiqueta pequeña', style: textTheme.labelSmall),
           ],
-        ),
       ),
     );
   }
