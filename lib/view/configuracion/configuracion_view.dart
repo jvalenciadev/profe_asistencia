@@ -17,7 +17,7 @@ class ConfiguracionSistemaWidget extends StatelessWidget {
         title: Text(
           'Configuración del Sistema',
           style: textTheme.titleLarge?.copyWith(
-            color: colorScheme.onPrimary,
+            color: Theme.of(context).appBarTheme.foregroundColor,
             fontWeight: FontWeight.bold,
           ),
         ),
