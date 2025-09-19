@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import '../../res/routes/routes_name.dart';
 import '../../utils/auth_util.dart';
 import '../../widgets/custom_alert.dart' as alert;
 import '../../widgets/custom_alert_action_dialog.dart' as alertdialog;
 import '../../widgets/custom_alert_confirm.dart' as alertconfirm;
+import 'package:get/get.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -19,6 +21,23 @@ class _HomeScreenState extends State<HomeScreen> {
     return SizedBox.expand(
       child: ListView(
         children: [
+          
+          ElevatedButton(
+            onPressed: () {
+              Get.toNamed(RouteName.barcodeView); // 👈 Navega al escáner
+            },
+            style: ElevatedButton.styleFrom(
+              padding: const EdgeInsets.symmetric(vertical: 16),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+            ),
+            child: const Text(
+              'Escanear Código de Barras',
+              style: TextStyle(fontSize: 16),
+            ),
+          ),
+         
           ElevatedButton(
             onPressed: () {
               alert.CustomAlertOverlay.show(
