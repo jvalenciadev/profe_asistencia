@@ -24,4 +24,5 @@ class RouteName {
   static const String eventoFormularioView = '/evento_formulario_view';
 
   static const String barcodeView = '/barcode_view';
+  static const String participantesView = '/participantes_view';
 }

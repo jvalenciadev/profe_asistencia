@@ -5,6 +5,7 @@ import 'package:profe_asistencia/widgets/update_app_view.dart';
 import '../../res/routes/routes_name.dart';
 import '../../view/barcode/barcode_view.dart';
 import '../../view/home/home_view.dart';
+import '../../view/participantes/participantes_view.dart';
 import '../../view/perfil/perfil_view.dart';
 import '../../view/presentacion_screan.dart';
 
@@ -50,6 +51,12 @@ class AppRoutes {
     GetPage(
       name: RouteName.barcodeView,
       page: () => BarcodeScannerPage(),
+      transitionDuration: Duration(milliseconds: 250),
+      transition: Transition.fadeIn,
+    ),
+    GetPage(
+      name: RouteName.participantesView,
+      page: () => ParticipantesView(),
       transitionDuration: Duration(milliseconds: 250),
       transition: Transition.fadeIn,
     ),

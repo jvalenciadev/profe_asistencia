@@ -28,4 +28,10 @@ class AppUrl {
       '$baseUrl/evento-asistencia-participante';
   static String get eventoInscripcion =>
       '$baseUrl/evento-inscripcion-participante';
+
+
+  static String get listPart => '$baseUrl/evento-lista-participantes';
+  static String get reporteEvento => '$baseUrl/evento-reporteInscritos';
+  static String get asistenciaBarcode => '$baseUrl/evento-asistencia-barcode';
+  static String get noAsistenciaBarcode => '$baseUrl/evento-no-asistencia-barcode';
 }
